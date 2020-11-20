@@ -16,16 +16,21 @@ class jobGenerator():
 
   def generateJobs(self):
     gpuList = self.randomRange(1, self.gpus)
-    execTimeList = self.randomRange(1, 25)
+    arvlTimeList = self.randomProgression(50)
+    srvcTimeList = self.randomRange(5, 25)
     patternList = self.randomChoice(choiceList)
     bwSensitiveList = self.randomRange(0, 2)
-    return zip(gpuList, patternList, execTimeList, bwSensitiveList)
+    return zip(gpuList, patternList, arvlTimeList, srvcTimeList, bwSensitiveList)
 
-  def randomRange(self, min, max):
-    return [str(random.randrange(min, max)) for _ in range(self.numjobs)]
+  def randomRange(self, minimum, maximum, dataType=str):
+    return [dataType(random.randrange(minimum, maximum)) for _ in range(self.numjobs)]
   
   def randomChoice(self, choiceList):
     return [str(random.choice(choiceList)) for _ in range(self.numjobs)]
+
+  def randomProgression(self, maximum):
+    samples = self.randomRange(0, maximum, int)
+    return [str(i) for i in sorted(samples)]
 
 
 @click.command()

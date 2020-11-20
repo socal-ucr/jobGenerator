@@ -2,9 +2,6 @@
 
 import click
 import sys
-import numpy as np
-import scipy.stats as dists
-import matplotlib.pyplot as plt
 import random
 
 choiceList = ["cyclic", "all", "tree"]

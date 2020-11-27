@@ -8,9 +8,10 @@ Usage: jobGenerator.py `[OPTIONS]`
 
 Options:
   --numjobs INTEGER  Number of Jobs
-  --numgpus INTEGER  Number of GPUs
-  --outfile TEXT     OutFile.txt
-  --help             Show this message and exit.
+  --maxNumGpus INTEGER  Number of GPUs
+  --minNumGpus INTEGER  Number of GPUs
+  --outfile TEXT        OutFile.txt
+  --help                Show this message and exit.
 
 ## Outfile
 

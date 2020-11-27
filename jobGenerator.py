@@ -7,12 +7,13 @@ import random
 choiceList = ["cyclic", "all", "tree"]
 
 class jobGenerator():
-  def __init__(self, numjobs, gpus):
+  def __init__(self, numjobs, mingpus, maxgpus):
     self.numjobs = int(numjobs)
-    self.gpus = int(gpus)
+    self.mingpus = int(mingpus)
+    self.maxgpus = int(maxgpus)
 
   def generateJobs(self):
-    gpuList = self.randomRange(1, self.gpus)
+    gpuList = self.randomRange(self.mingpus, self.maxgpus)
     arvlTimeList = self.randomProgression(50)
     srvcTimeList = self.randomRange(5, 25)
     patternList = self.randomChoice(choiceList)
@@ -32,10 +33,11 @@ class jobGenerator():
 
 @click.command()
 @click.option('--numjobs', default=1000, help='Number of Jobs')
-@click.option('--numgpus', default=8, help='Number of GPUs')
+@click.option('--mingpus', default=1, help='Number of GPUs')
+@click.option('--maxgpus', default=8, help='Number of GPUs')
 @click.option('--outfile', prompt='OutFile', help='OutFile.txt')
-def main(numjobs, numgpus, outfile):
-  gen = jobGenerator(numjobs, numgpus)
+def main(numjobs, mingpus, maxgpus, outfile):
+  gen = jobGenerator(numjobs, mingpus, maxgpus)
   jobs = gen.generateJobs()
   f = open(outfile, "w")
   for job in jobs:

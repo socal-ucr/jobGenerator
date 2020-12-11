@@ -15,4 +15,4 @@ Options:
 
 ## Outfile
 
-numGpus, pattern, executionTime, bwSensitivity
+numGpus, pattern, arrivalTime, executionTime, bwSensitivity

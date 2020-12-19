@@ -4,19 +4,20 @@ import click
 import sys
 import random
 
-choiceList = ["cyclic", "all", "tree"]
+choiceList = ["ring", "all", "tree"]
 
 class jobGenerator():
-  def __init__(self, numjobs, mingpus, maxgpus):
+  def __init__(self, numjobs, mingpus, maxgpus, patternList):
     self.numjobs = int(numjobs)
     self.mingpus = int(mingpus)
     self.maxgpus = int(maxgpus)
+    self.patternList = patternList
 
   def generateJobs(self):
     gpuList = self.randomRange(self.mingpus, self.maxgpus)
     arvlTimeList = self.randomProgression(50)
     srvcTimeList = self.randomRange(5, 25)
-    patternList = self.randomChoice(choiceList)
+    patternList = self.randomChoice(self.patternList)
     bwSensitiveList = self.randomRange(0, 2)
     return zip(gpuList, patternList, arvlTimeList, srvcTimeList, bwSensitiveList)
 
@@ -33,11 +34,17 @@ class jobGenerator():
 
 @click.command()
 @click.option('--numjobs', default=1000, help='Number of Jobs')
-@click.option('--mingpus', default=1, help='Number of GPUs')
+@click.option('--mingpus', default=2, help='Number of GPUs')
 @click.option('--maxgpus', default=8, help='Number of GPUs')
+@click.option('--pattern', default="random", help='Pattern of AppGraph')
 @click.option('--outfile', prompt='OutFile', help='OutFile.txt')
-def main(numjobs, mingpus, maxgpus, outfile):
-  gen = jobGenerator(numjobs, mingpus, maxgpus)
+def main(numjobs, mingpus, maxgpus, pattern, outfile):
+  patternList = []
+  if (str(pattern) == "random"):
+    patternList = choiceList
+  else:
+    patternList = [str(pattern)]
+  gen = jobGenerator(numjobs, mingpus, maxgpus, patternList)
   jobs = gen.generateJobs()
   f = open(outfile, "w")
   for job in jobs:

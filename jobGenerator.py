@@ -24,7 +24,7 @@ class jobGenerator():
     return [str(random.choice(choiceList)) for _ in range(self.numjobs)]
 
   def __randomProgression(self, maximum):
-    samples = self.randomRange(0, maximum, int)
+    samples = self.__randomRange(0, maximum, int)
     return [str(i) for i in sorted(samples)]
 
   def generateJobs(self):

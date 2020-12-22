@@ -3,33 +3,39 @@
 import click
 import sys
 import random
+from statistics import mean
 
 choiceList = ["ring", "all", "tree"]
 
 class jobGenerator():
-  def __init__(self, numjobs, mingpus, maxgpus, patternList):
+  # Note(kiran): Default min and max srvcTime be changed?
+  def __init__(self, numjobs, mingpus, maxgpus, patternList, minST=5, maxST=25):
     self.numjobs = int(numjobs)
     self.mingpus = int(mingpus)
     self.maxgpus = int(maxgpus)
     self.patternList = patternList
+    self.minSrvcTime = minST
+    self.maxSrvcTime = maxST
 
-  def generateJobs(self):
-    gpuList = self.randomRange(self.mingpus, self.maxgpus)
-    arvlTimeList = self.randomProgression(50)
-    srvcTimeList = self.randomRange(5, 25)
-    patternList = self.randomChoice(self.patternList)
-    bwSensitiveList = self.randomRange(0, 2)
-    return zip(gpuList, patternList, arvlTimeList, srvcTimeList, bwSensitiveList)
-
-  def randomRange(self, minimum, maximum, dataType=str):
+  def __randomRange(self, minimum, maximum, dataType=str):
     return [dataType(random.randrange(minimum, maximum)) for _ in range(self.numjobs)]
-  
-  def randomChoice(self, choiceList):
+
+  def __randomChoice(self, choiceList):
     return [str(random.choice(choiceList)) for _ in range(self.numjobs)]
 
-  def randomProgression(self, maximum):
+  def __randomProgression(self, maximum):
     samples = self.randomRange(0, maximum, int)
     return [str(i) for i in sorted(samples)]
+
+  def generateJobs(self):
+    gpuList = self.__randomRange(self.mingpus, self.maxgpus)
+    # Note(kiran): Anything other than mean?
+    arvlTimeList = self.__randomProgression(
+        mean(range(self.minSrvcTime, self.maxSrvcTime)) * self.numjobs)
+    srvcTimeList = self.__randomRange(self.minSrvcTime, self.maxSrvcTime)
+    patternList = self.__randomChoice(self.patternList)
+    bwSensitiveList = self.__randomRange(0, 2)
+    return zip(gpuList, patternList, arvlTimeList, srvcTimeList, bwSensitiveList)
 
 
 @click.command()

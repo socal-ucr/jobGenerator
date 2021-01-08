@@ -6,6 +6,8 @@ import random
 from statistics import mean
 
 choiceList = ["ring", "all", "tree"]
+bwSensitiveTask = "vgg16.sh"
+bwInsensitiveTask = "googlenet.sh"
 
 class jobGenerator():
   # Note(kiran): Default min and max srvcTime be changed?
@@ -35,7 +37,8 @@ class jobGenerator():
     srvcTimeList = self.__randomRange(self.minSrvcTime, self.maxSrvcTime)
     patternList = self.__randomChoice(self.patternList)
     bwSensitiveList = self.__randomRange(0, 2)
-    return zip(gpuList, patternList, arvlTimeList, srvcTimeList, bwSensitiveList)
+    taskList = [bwSensitiveTask if int(sensitive) else bwInsensitiveTask for sensitive in bwSensitiveList]
+    return zip(gpuList, patternList, arvlTimeList, srvcTimeList, bwSensitiveList, taskList)
 
 
 @click.command()

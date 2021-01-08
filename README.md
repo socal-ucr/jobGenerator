@@ -16,4 +16,4 @@ Options:
 
 ## Outfile
 
-numGpus, pattern, arrivalTime, executionTime, bwSensitivity
+numGpus, pattern, arrivalTime, executionTime, bwSensitivity, taskToRun

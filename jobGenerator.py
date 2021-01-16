@@ -5,7 +5,8 @@ import sys
 import random
 from statistics import mean
 
-choiceList = ["ring", "all", "tree"]
+# TODO(Kiran): Make choiceList = ["ring", "all", "tree"] when we want to randomize
+choiceList = ["ring"]
 bwSensitiveTask = "vgg16.sh"
 bwInsensitiveTask = "googlenet.sh"
 

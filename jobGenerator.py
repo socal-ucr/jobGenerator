@@ -45,7 +45,7 @@ class jobGenerator():
 @click.command()
 @click.option('--numjobs', default=1000, help='Number of Jobs')
 @click.option('--mingpus', default=2, help='Number of GPUs')
-@click.option('--maxgpus', default=8, help='Number of GPUs')
+@click.option('--maxgpus', default=6, help='Number of GPUs')
 @click.option('--pattern', default="random", help='Pattern of AppGraph')
 @click.option('--outfile', prompt='OutFile', help='OutFile.txt')
 def main(numjobs, mingpus, maxgpus, pattern, outfile):

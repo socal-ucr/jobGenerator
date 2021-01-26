@@ -7,9 +7,10 @@ from statistics import mean
 
 # TODO(Kiran): Make choiceList = ["ring", "all", "tree"] when we want to randomize
 choiceList = ["ring"]
-bwSensitiveTask = "vgg16.sh"
-bwInsensitiveTask = "googlenet.sh"
+bwSensitiveNets = ["alexnet.sh", "inception-v3.sh", "resnet-50.sh", "vgg16.sh"]
+bwInsensitiveNets = ["googlenet.sh", "caffenet.sh"]
 
+netList = ["alexnet.sh", "googlenet.sh", "caffenet.sh", "inception-v3.sh", "resnet-50.sh", "vgg16.sh"]
 class jobGenerator():
   # Note(kiran): Default min and max srvcTime be changed?
   def __init__(self, numjobs, mingpus, maxgpus, patternList, minST=5, maxST=25):
@@ -31,14 +32,23 @@ class jobGenerator():
     return [str(i) for i in sorted(samples)]
 
   def generateJobs(self):
-    gpuList = self.__randomRange(self.mingpus, self.maxgpus)
+    gpuList = []
+    if self.mingpus == self.maxgpus:
+      gpuList = [str(self.mingpus)] * self.numjobs
+    else:
+      gpuList = self.__randomRange(self.mingpus, self.maxgpus)
     # Note(kiran): Anything other than mean?
     arvlTimeList = self.__randomProgression(
         mean(range(self.minSrvcTime, self.maxSrvcTime)) * self.numjobs)
     srvcTimeList = self.__randomRange(self.minSrvcTime, self.maxSrvcTime)
     patternList = self.__randomChoice(self.patternList)
-    bwSensitiveList = self.__randomRange(0, 2)
-    taskList = [bwSensitiveTask if int(sensitive) else bwInsensitiveTask for sensitive in bwSensitiveList]
+    bwSensitiveList = []
+    taskList = self.__randomChoice(netList)
+    for task in taskList:
+      if task in bwInsensitiveNets:
+        bwSensitiveList.append(str(0))
+      else:
+        bwSensitiveList.append(str(1))
     return zip(gpuList, patternList, arvlTimeList, srvcTimeList, bwSensitiveList, taskList)
 
 

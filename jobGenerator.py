@@ -10,7 +10,9 @@ choiceList = ["ring"]
 bwSensitiveNets = ["alexnet.sh", "inception-v3.sh", "resnet-50.sh", "vgg16.sh"]
 bwInsensitiveNets = ["googlenet.sh", "caffenet.sh"]
 
-netList = ["alexnet.sh", "googlenet.sh", "caffenet.sh", "inception-v3.sh", "resnet-50.sh", "vgg16.sh"]
+netList = ["alexnet.sh", "inception-v3.sh", "resnet-50.sh", "vgg16.sh",
+           "googlenet.sh", "caffenet.sh"]
+
 class jobGenerator():
   # Note(kiran): Default min and max srvcTime be changed?
   def __init__(self, numjobs, mingpus, maxgpus, patternList, minST=5, maxST=25):
@@ -53,7 +55,7 @@ class jobGenerator():
 
 
 @click.command()
-@click.option('--numjobs', default=1000, help='Number of Jobs')
+@click.option('--numjobs', default=100, help='Number of Jobs')
 @click.option('--mingpus', default=2, help='Number of GPUs')
 @click.option('--maxgpus', default=6, help='Number of GPUs')
 @click.option('--pattern', default="random", help='Pattern of AppGraph')
